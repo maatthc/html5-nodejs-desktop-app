@@ -20,7 +20,7 @@
     </style>
     <script type="text/javascript" src="controller/auth.js"></script>
     <script type="text/javascript">
-    if (!JSON.parse(localStorage.getItem('settings'))) location.href = 'settings.html';
+    if (localStorage.getItem('logged')!= 1) location.href = 'index.html';
     </script>
 </head>
 
@@ -202,19 +202,19 @@
     });
 
     // load widgets async
-    $.get('widgets/flickr.html', function(data) {
-        $('body').append(data)
-    });
-    $.get('widgets/maps.html', function(data) {
-        $('body').append(data);
-    });
-    $.get('widgets/weather.html', function(data) {
-        $('body').append(data);
-    });
+//    $.get('widgets/flickr.html', function(data) {
+//        $('body').append(data)
+//    });
+//    $.get('widgets/maps.html', function(data) {
+//        $('body').append(data);
+//    });
+//    $.get('widgets/weather.html', function(data) {
+//        $('body').append(data);
+//    });
 
     // update the dashboard with values from settings
-    $('.maploc').text(settings.location.trim().toUpperCase());
-    $('.flickrtags').text(settings.flickr.trim().toUpperCase());
+//    $('.maploc').text(settings.location.trim().toUpperCase());
+//    $('.flickrtags').text(settings.flickr.trim().toUpperCase());
     </script>
 </body>
 

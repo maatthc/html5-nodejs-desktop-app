@@ -12,8 +12,10 @@
     <!-- Theme style -->
     <link href="assets/css/AdminLTE.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="controller/auth.js"></script>
+        <script type="text/javascript" src="assets/js/bCrypt.js"></script>
+    <script type="text/javascript" src="assets/js/isaac.js"></script>
     <script type="text/javascript">
-    if (JSON.parse(localStorage.getItem('user'))) location.href = 'dashboard.html';
+    if (localStorage.getItem('logged') == 1) location.href = 'dashboard.html';
     </script>
 </head>
 

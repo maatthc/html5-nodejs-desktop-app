@@ -12,8 +12,10 @@
     <!-- Theme style -->
     <link href="assets/css/AdminLTE.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="controller/auth.js"></script>
+    <script type="text/javascript" src="assets/js/bCrypt.js"></script>
+    <script type="text/javascript" src="assets/js/isaac.js"></script>
     <script type="text/javascript">
-    if (JSON.parse(localStorage.getItem('user'))) location.href = 'dashboard.html';
+    if (JSON.parse(localStorage.getItem('logged'))) location.href = 'dashboard.html';
     </script>
 </head>
 
@@ -100,7 +102,7 @@
             } else if (resp == 2) {
                 location.href = 'settings.html';
             } else {
-                alert('Oops something went wrong!');
+                alert('Oops something went wrong! Resp:' +  resp);
             }
             $('#form-val').addClass('hide');
         } else {

@@ -588,7 +588,7 @@ bCrypt.prototype.checkpw = function(plaintext, hashed, callback, progress) {
 	this.hashpw(plaintext, salt, function(try_pass) {
 		var ret = 0;
 		for(var i = 0; i < hashed.length; i++){
-			ret |= bcrypt.getByte(hashed[i]) ^ bcrypt.getByte(try_pass[i])
+			ret |= obj.getByte(hashed[i]) ^ obj.getByte(try_pass[i])
 		}
 		callback(ret == 0);
 	}, progress);

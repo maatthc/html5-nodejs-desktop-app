@@ -1,10 +1,7 @@
 window.dash = window.dash || {};
-var db = require('diskdb'),
-    bcrypt = require('bcrypt-nodejs');
 
-db = db.connect('collections', ['users', 'settings']);
 
-dash.registerUser = function(name, userid, password) {
+dash.registerUser = function (name, userid, password) {
 
     /*
     *  response code : 0 - User with this id already exists
@@ -12,20 +9,28 @@ dash.registerUser = function(name, userid, password) {
     *  response code : 2 - Sucessfully registered and User has not filled the settings
     */
 
-    if (db.users.findOne({
-        userid: userid
-    })) return 0; 
-
-    // save the user to DB
-    var savedUser = db.users.save({
-        name: name,
-        userid: userid,
-        password: bcrypt.hashSync(password)
-    });
-    return populateUser(savedUser);
+    var user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        return 0;         
+    }
+    var bcrypt = new bCrypt();
+    user = {};
+    user.name = name;
+    bcrypt.hashpw(password,bcrypt.gensalt(5),function(pass_crypt){
+        var user = JSON.parse(localStorage.getItem('user'));
+        alert(user.name);
+        user.password = pass_crypt;
+        localStorage.setItem('user', JSON.stringify(user));
+    }, function() {});
+    user.userid = userid;
+    localStorage.setItem('user', JSON.stringify(user));
+    // Sleep
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + 2000){ /* do nothing */ }
+    return populateUser(user);
 };
 
-dash.authUser = function(userid, password) {
+dash.authUser = function (userid, password) {
     
     /*
     *  response code : 0 - User does not exists
@@ -35,11 +40,10 @@ dash.authUser = function(userid, password) {
     */
 
     // fetch the user from DB
-    var user = db.users.findOne({
-        userid: userid
-    });
+    user = JSON.parse(localStorage.getItem('user'));
+    var bcrypt = new bCrypt();
     if (user) {
-        if (bcrypt.compareSync(password, user.password)) {
+        if (bcrypt.checkpw(password, user.password, function(){}, function(){})) {
             return populateUser(user);
         } else {
             return 3;
@@ -56,8 +60,7 @@ dash.signOut = function () {
     *  Clean localstorage
     */
 
-	localStorage.removeItem('user');
-	localStorage.removeItem('settings');
+	localStorage.removeItem('logged');
 	return 1;
 };
 
@@ -67,20 +70,7 @@ var populateUser = function(user) {
     *  Create a "Session"
     */
 
-    delete user.password; // remove password before creating a "session"
-
-    // if local storage has a user object, the user is logged in 'Duh!'
-    localStorage.setItem('user', JSON.stringify(user));
-
-    // check if the user has completed the settings
-    var setg = db.settings.findOne({
-        uid: user._id
-    });
-    if (setg) {
-        localStorage.setItem('settings', JSON.stringify(setg.settings));
-        return 1;
-    } else {
-        return 2;
-    }
+    localStorage.setItem('logged', "1");
+    return 1;
 };
 
